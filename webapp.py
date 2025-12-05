@@ -20,6 +20,21 @@ app.secret_key = os.environ['SECRET_KEY'] #used to sign session cookies
 oauth = OAuth(app)
 oauth.init_app(app) #initialize the app to be able to make requests for user information
 
+def main():
+    connection_string = os.environ["MONGO_CONNECTION_STRING"]
+    db_name = os.environ["MONGO_DBNAME"]
+   
+    client = pymongo.MongoClient(connection_string)
+    db = client[db_name]
+    collection = db['posts'] #1. put the name of your collection in the quotes
+   
+    # Send a ping to confirm a successful connection
+    try:
+        client.admin.command('ping')
+        print("Pinged your deployment. You successfully connected to MongoDB!")
+    except Exception as e:
+        print(e)
+
 #Set up GitHub as OAuth provider
 github = oauth.remote_app(
     'github',
