@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}page1{% endblock %}
+
+{% block content %}
+<h1>List</h1>
+
+<table>
+
+  {% for userinput in userinputs %}
+  <tr>
+    <td> {{userinput._id}} </td>
+    <td> {{userinput.login}} </td>
+    <td> {{ userinput.title }} </td>
+    <td><pre>{{ userinput.content }}</pre></td>
+    <td>
+      
+    </td>
+  </tr>
+  {% endfor %}
+
+</table>
+
+{% endblock %}
