@@ -101,7 +101,7 @@ def renderPage1():
 #listall
 @app.route('/listAll')
 def listAll():
-    if not is_logged_in():
+    if not inject_logged_in():
         flash("You must be logged in to do that",'error')
         return redirect(url_for('home')) 
     login = session['user_data']['login']   
@@ -111,7 +111,7 @@ def listAll():
 #create post?
 @app.route('/create_post', methods=['POST'])
 def create_post():
-    if not is_logged_in():
+    if not inject_logged_in():
         flash("You must be logged in to do that",'error')
         return redirect(url_for('home'))
     content = request.form.get("content") # match "id", "name" in form
