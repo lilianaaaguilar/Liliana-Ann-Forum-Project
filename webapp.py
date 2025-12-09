@@ -95,8 +95,20 @@ def authorized():
 
 @app.route('/page1')
 def renderPage1():
-    
-    return render_template('page1.html')
+    posts = list(collection.find().sort("_id", -1))
+    return render_template('page1.html', posts=posts)
+
+#create post?
+@app.route('/create_post', methods=['POST'])
+def create_post():
+    content = request.form.get('content')
+    if not content.strip():
+        return render_template("message.html", message="Post cannot be blank")
+    post = {
+        "content": content
+    }
+    collection.insert_one(post)
+    return redirect('/page1')
 
 #the tokengetter is automatically called to check who is logged in.
 @github.tokengetter
