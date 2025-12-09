@@ -24,20 +24,20 @@ app.secret_key = os.environ['SECRET_KEY'] #used to sign session cookies
 oauth = OAuth(app)
 oauth.init_app(app) #initialize the app to be able to make requests for user information
 
-def main():
-    connection_string = os.environ["MONGO_CONNECTION_STRING"]
-    db_name = os.environ["MONGO_DBNAME"]
+#def main():
+connection_string = os.environ["MONGO_CONNECTION_STRING"]
+db_name = os.environ["MONGO_DBNAME"]
    
-    client = pymongo.MongoClient(connection_string)
-    db = client[db_name]
-    collection = db['posts'] #1. put the name of your collection in the quotes
+client = pymongo.MongoClient(connection_string)
+db = client[db_name]
+collection = db['posts'] #1. put the name of your collection in the quotes
    
     # Send a ping to confirm a successful connection
-    try:
-        client.admin.command('ping')
-        print("Pinged your deployment. You successfully connected to MongoDB!")
-    except Exception as e:
-        print(e)
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
 
 #Set up GitHub as OAuth provider
 github = oauth.remote_app(
@@ -98,17 +98,31 @@ def renderPage1():
     posts = list(collection.find().sort("_id", -1))
     return render_template('page1.html', posts=posts)
 
+#listall
+@app.route('/listAll')
+def listAll():
+    if not is_logged_in():
+        flash("You must be logged in to do that",'error')
+        return redirect(url_for('home')) 
+    login = session['user_data']['login']   
+    userinputs = [x for x in collection.find()]
+    return render_template('list.html',userinputs = userinputs,login=login)
+    
 #create post?
 @app.route('/create_post', methods=['POST'])
 def create_post():
-    content = request.form.get('content')
-    if not content.strip():
-        return render_template("message.html", message="Post cannot be blank")
-    post = {
-        "content": content
-    }
-    collection.insert_one(post)
-    return redirect('/page1')
+    if not is_logged_in():
+        flash("You must be logged in to do that",'error')
+        return redirect(url_for('home'))
+    content = request.form.get("content") # match "id", "name" in form
+    login = session['user_data']['login']
+    result = collection.insert_one(
+        { 
+    	    "content" : content,
+    	    "login"   : login
+    	}
+    )
+    return redirect(url_for('listAll'))
 
 #the tokengetter is automatically called to check who is logged in.
 @github.tokengetter
