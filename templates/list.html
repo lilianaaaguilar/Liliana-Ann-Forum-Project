@@ -3,23 +3,27 @@
 {% block title %}All posts{% endblock %}
 
 {% block content %}
-<h1>All Posts</h1>
+  
+  <h1>All Posts</h1>
 
-<table>
-
-  {% for userinput in userinputs %}
-  <tr>
-    <td> {{userinput.login}} </td>
-    <td><pre> {{ userinput.content }} </pre></td>
-    <td>
-    </td>
-  </tr>
+{% for userinput in userinputs %}
+  <div>
+    <p><strong>{{ userinput.login }}</strong>: {{ userinput.content }}</p>
+    {% if userinput.replies %}
+      <div>
+        <h5>Replies:</h5>
+        {% for reply in userinput.replies %}
+          <p><strong>{{ reply.login }}</strong>: {{ reply.content }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <form action="{{ url_for('reply', post_id=userinput._id) }}" method="POST">
+      <textarea name="reply_content" rows="2" cols="40" placeholder="write a reply..." required></textarea>
+      <button type="submit">Reply</button>
+    </form>
+  </div>
 {% else %}
-  <tr>
-    <td colspan="2">No posts yet.</td>
-  </tr>
-  {% endfor %}
-
-</table>
+  <p>No posts yet.</p>
+{% endfor %}
 
 {% endblock %}

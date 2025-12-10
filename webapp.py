@@ -2,6 +2,7 @@ from flask import Flask, redirect, url_for, session, request, jsonify, flash
 from flask_oauthlib.client import OAuth
 #from flask_oauthlib.contrib.apps import github #import to make requests to GitHub's OAuth
 from flask import render_template
+from bson.objectid import ObjectId
 
 import pprint
 import os
@@ -12,8 +13,7 @@ import pprint
 
 # This code originally from https://github.com/lepture/flask-oauthlib/blob/master/example/github.py
 # Edited by P. Conrad for SPIS 2016 to add getting Client Id and Secret from
-# environment variables, so that this will work on Heroku.
-# Edited by S. Adams for Designing Software for the Web to add comments and remove flash messaging
+# environment variables
 
 app = Flask(__name__)
 
@@ -97,7 +97,6 @@ def authorized():
 def renderPage1():
     posts = list(collection.find().sort("_id", -1))
     if 'github_token' not in session:
-        flash("You must be logged in to view start posting.", "error")
         return redirect(url_for('home'))
     return render_template('startpost.html', posts=posts)
 
@@ -106,7 +105,6 @@ def renderPage1():
 def listAll():
     # Must be logged in
     if 'github_token' not in session:
-        flash("You must be logged in to view this page.", "error")
         return redirect(url_for('home'))
     login = session['user_data']['login']
     user_posts = list(collection.find({"login": login}))
@@ -114,6 +112,8 @@ def listAll():
         flash("You must create a post before you can view this page.", "error")
         return redirect(url_for('renderPage1'))
     userinputs = list(collection.find().sort("_id", -1))
+    for post in userinputs:
+        post['_id'] = str(post['_id'])
     return render_template('list.html', userinputs=userinputs, login=login)
     
 #create post?
@@ -128,6 +128,23 @@ def create_post():
     	    "content" : content,
     	    "login"   : login
     	}
+    )
+    return redirect(url_for('listAll'))
+    
+@app.route('/reply/<post_id>', methods=['POST'])
+def reply(post_id):
+    if 'github_token' not in session:
+        return redirect(url_for('home'))
+    reply_content = request.form.get("reply_content")
+    login = session['user_data']['login']
+    collection.update_one(
+        {"_id": ObjectId(post_id)},
+        {"$push": {
+            "replies": {
+                "login": login,
+                "content": reply_content
+            }
+        }}
     )
     return redirect(url_for('listAll'))
 
