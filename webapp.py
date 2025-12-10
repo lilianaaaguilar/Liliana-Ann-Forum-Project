@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, session, request, jsonify
+from flask import Flask, redirect, url_for, session, request, jsonify, flash
 from flask_oauthlib.client import OAuth
 #from flask_oauthlib.contrib.apps import github #import to make requests to GitHub's OAuth
 from flask import render_template
@@ -96,12 +96,15 @@ def authorized():
 @app.route('/page1')
 def renderPage1():
     posts = list(collection.find().sort("_id", -1))
+    if 'github_token' not in session:
+        flash("You must be logged in to view Page 1.", "error")
+        return redirect(url_for('home'))
     return render_template('page1.html', posts=posts)
 
 #listall
 @app.route('/listAll')
 def listAll():
-    if not inject_logged_in():
+    if 'github_token' not in session:
         flash("You must be logged in to do that",'error')
         return redirect(url_for('home')) 
     login = session['user_data']['login']   
@@ -111,8 +114,7 @@ def listAll():
 #create post?
 @app.route('/create_post', methods=['POST'])
 def create_post():
-    if not inject_logged_in():
-        flash("You must be logged in to do that",'error')
+    if 'github_token' not in session:
         return redirect(url_for('home'))
     content = request.form.get("content") # match "id", "name" in form
     login = session['user_data']['login']
