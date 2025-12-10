@@ -1,18 +1,22 @@
 {% extends "layout.html" %}
 
-{% block title %}page1{% endblock %}
+{% block title %}All posts{% endblock %}
 
 {% block content %}
-<h1>List</h1>
+<h1>All Posts</h1>
 
 <table>
 
   {% for userinput in userinputs %}
   <tr>
     <td> {{userinput.login}} </td>
-    <td><pre>{{ userinput.content }}</pre></td>
+    <td><pre> {{ userinput.content }} </pre></td>
     <td>
     </td>
+  </tr>
+{% else %}
+  <tr>
+    <td colspan="2">No posts yet.</td>
   </tr>
   {% endfor %}
 

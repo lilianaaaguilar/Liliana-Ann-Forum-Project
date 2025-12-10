@@ -1,12 +1,16 @@
 {% extends "layout.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Welcome!{% endblock %}
 
 {% block content %}
-  <h1>Home</h1>
+  <h1>Best Music Genres</h1>
 
-<p>This is a sample application to demonstrate authenticating against GitHub OAuth,
-using Flask.</p>
+<p>This is a forum designed to share your opinions on music genres. We want to know, What IS the best genre of music?</p>
 
+<p><b>Created by Ann Jordan and Liliana Aguilar</b></p>
+
+{% if not logged_in %}
+<h3>Log in to get started!</h3>
+{% endif %}
 
 {% endblock %}

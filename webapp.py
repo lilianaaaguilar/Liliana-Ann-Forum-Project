@@ -93,23 +93,28 @@ def authorized():
     return render_template('message.html', message=message)
 
 
-@app.route('/page1')
+@app.route('/startpost')
 def renderPage1():
     posts = list(collection.find().sort("_id", -1))
     if 'github_token' not in session:
-        flash("You must be logged in to view Page 1.", "error")
+        flash("You must be logged in to view start posting.", "error")
         return redirect(url_for('home'))
-    return render_template('page1.html', posts=posts)
+    return render_template('startpost.html', posts=posts)
 
 #listall
 @app.route('/listAll')
 def listAll():
+    # Must be logged in
     if 'github_token' not in session:
-        flash("You must be logged in to do that",'error')
-        return redirect(url_for('home')) 
-    login = session['user_data']['login']   
-    userinputs = [x for x in collection.find()]
-    return render_template('list.html',userinputs = userinputs,login=login)
+        flash("You must be logged in to view this page.", "error")
+        return redirect(url_for('home'))
+    login = session['user_data']['login']
+    user_posts = list(collection.find({"login": login}))
+    if not user_posts:
+        flash("You must create a post before you can view this page.", "error")
+        return redirect(url_for('renderPage1'))
+    userinputs = list(collection.find().sort("_id", -1))
+    return render_template('list.html', userinputs=userinputs, login=login)
     
 #create post?
 @app.route('/create_post', methods=['POST'])
