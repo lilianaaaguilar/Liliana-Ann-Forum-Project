@@ -20,7 +20,7 @@ body {
 	border-color: var(--blue-2);
 }
 .navbar-default .navbar-nav > li > a {
-	color: white;
+	color: royalblue;
 }
 .navbar-default .navbar-nav > li > a:hover {
 	color: var(--blue-4);
