@@ -16,6 +16,18 @@ body {
      margin-left: 20px;
 }
 
+/* navbar */
+.navbar-default {
+	background-color:var(--blue-1);
+	border-color: var(--blue-2);
+}
+.navbar-default .navbar-nav > li > a {
+	color: white;
+}
+.navbar-default .navbar-nav > li > a:hover {
+	color: var(--blue-4);
+}
+
 /* buttons */
 button, .primary-btn {
 	background-color: var(--blue-3);
