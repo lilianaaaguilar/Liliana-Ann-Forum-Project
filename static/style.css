@@ -44,6 +44,19 @@ body {
 	color: var(--blue-2);
 }
 
+/* text */
+textarea {
+	width: 100%;
+	padding: 8px;
+	margin-top: 5px;
+	border-radius: 5px;
+	border: 1px solid var(--blue-4);
+}
+textarea:focus {
+	outline: none;
+	border-color: var(--blue-3);
+}
+
 /* buttons */
 button, .primary-btn {
 	background-color: var(--blue-3);
