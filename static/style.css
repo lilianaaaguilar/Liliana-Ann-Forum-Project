@@ -8,9 +8,24 @@
 
 body {
 	font-family: 'Segoe UI', Roboto, sans-serif;
-	background-color: var()
+	background-color: var(--blue-5);
+	color: var(--blue-1);
 }
 
 #content {
      margin-left: 20px;
+}
+
+/* buttons */
+button, .primary-btn {
+	background-color: var(--blue-3);
+	color: white;
+	padding: 8px 15px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+button:hover, .primary-btn:hover {
+	background-color: var(--blue-2);
 }
