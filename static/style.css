@@ -11,11 +11,7 @@ body {
 	font-family: 'Segoe UI', Roboto, sans-serif;
 	background-color: var(--blue-5);
 	color: var(--blue-1);
-}
-
-/* content container */
-#content {
-     margin-left: 20px;
+	margin: 0;
 }
 
 /* navbar */
@@ -30,6 +26,33 @@ body {
 	color: var(--blue-4);
 }
 
+.navbar-default .navbar-text {
+	color: white;
+}
+
+/* hero */
+.hero {
+	background: linear-gradient(135deg, var(--blue-1), var(--blue-3));
+	color: white;
+	padding: 80px 20px;
+	text-align: center;
+	border-radius: 8px;
+	margin-bottom: 30px;
+	box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.hero h1 {
+	font-size: 3rem;
+	margin-bottom:15px;
+}
+.hero p {
+	font-size: 1.3rem;
+}
+
+/* content container */
+#content {
+     margin-left: 20px;
+}
+
 /* card posts */
 .cards {
 	background-color: white;
@@ -38,10 +61,27 @@ body {
 	border-left: 5px solid var(--blue-3);
 	border-radius: 6px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
 .card h5 {
 	margin-top: 10px;
 	color: var(--blue-2);
+}
+
+/* replies */
+.replies {
+	background-color: var(--blue-5);
+	padding: 8px;
+	margin-top: 10px;
+	border-left: 3px solid var(--blue-4);
+	border-radius: 6px;
+}
+.replies p {
+	margin: 5px 0;
 }
 
 /* text */
@@ -51,6 +91,7 @@ textarea {
 	margin-top: 5px;
 	border-radius: 5px;
 	border: 1px solid var(--blue-4);
+	transition: border-color 0.2s;
 }
 textarea:focus {
 	outline: none;
@@ -65,9 +106,10 @@ button, .primary-btn {
 	padding: 8px 15px;
 	border-radius: 5px;
 	cursor: pointer;
-	transition: 0.2s;
+	transition: background-color 0.2s, transform 0.2s;
 }
 
 button:hover, .primary-btn:hover {
 	background-color: var(--blue-2);
+	transform: translate(-2px);
 }
